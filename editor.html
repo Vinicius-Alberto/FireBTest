@@ -1,0 +1,80 @@
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editor - O Diário</title>
+  <link rel="stylesheet" href="css/editor.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>O Diário</h1>
+      <nav>
+        <a href="index.html">Notícias</a>
+        <a href="editor.html" class="active">Editor</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="editor-section">
+      <h2>Adicionar Notícia</h2>
+      <form id="newsForm">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" required />
+
+        <label for="image">Imagem:</label>
+        <input type="file" id="image" name="image" accept="image/*" />
+        <div class="image-preview" id="imagePreview">
+          <img id="previewImage" src="" alt="Prévia da Imagem" style="display: none;" />
+        </div>
+
+        <label for="content">Conteúdo:</label>
+        <textarea id="content" name="content" rows="5" required></textarea>
+
+        <div class="form-actions">
+          <button type="submit">Salvar Notícia</button>
+          <button type="button" id="clearForm">Limpar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="news-list-section">
+      <h2>Notícias Existentes</h2>
+      <div class="news-list" id="newsList"></div>
+    </div>
+  </div>
+
+  <!-- Modal de Edição -->
+  <div id="editModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <button id="closeModal" class="close-button">x</button>
+      <h2>Editar Notícia</h2>
+
+      <label for="editTitle">Título:</label>
+      <input type="text" id="editTitle" />
+
+      <label for="editContent">Conteúdo:</label>
+      <textarea id="editContent" rows="5"></textarea>
+
+      <label>Imagem Atual:</label>
+      <img id="currentEditImage" src="" alt="Imagem atual" />
+
+      <label for="editImage">Alterar Imagem (opcional):</label>
+      <input type="file" id="editImage" accept="image/*" />
+
+      <div class="form-actions">
+        <button id="saveEditBtn">Salvar Alterações</button>
+        <button id="cancelEditBtn" class="cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+<footer>
+  <div>
+    <p>© 2025 O Diário. Todos os direitos reservados.</p>
+  </div>
+</footer>
+</body>
+</html>
