@@ -1,0 +1,332 @@
+body {
+  background: linear-gradient(270deg, #7094e7, #5c85e7, #4d7ae2, #4a4dee);
+  background-size: 200% 200%;
+  background-attachment: fixed;
+  animation: gradientShift 10s ease infinite;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container {
+  max-width: 56.25rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+  flex: 1;
+}
+
+header {
+  background: #1e1e2f;
+  padding: 0.9375rem 0;
+  box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.5);
+  top: 0;
+  z-index: 1000;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  color: #fff;
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+header nav a {
+  color: #ffeaa7;
+  text-decoration: none;
+  margin-left: 1.25rem;
+  font-size: 1rem;
+}
+
+footer {
+  background: #1e1e2f;
+  padding: 0.9375rem 0;
+  box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editor-section,
+.news-list-section {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(0.75rem);
+  border-radius: 1.25rem;
+  padding: 1.875rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+}
+
+.editor-section h2,
+.news-list-section h2 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+  font-weight: bold;
+}
+
+form label {
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 0.3125rem;
+  display: block;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 0.625rem;
+  margin-bottom: 0.9375rem;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+form input::placeholder,
+form textarea::placeholder {
+  color: #ccc;
+}
+
+form input[type="file"] {
+  background: none;
+  padding: 0;
+  margin-bottom: 0.9375rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+}
+
+form button {
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  padding: 0.625rem 1.125rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #a29bfe;
+}
+
+#clearForm {
+  background-color: #d63031;
+}
+
+#clearForm:hover {
+  background-color: #ff7675;
+}
+
+.news-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+}
+
+.mini-thumbnail {
+  width: 4.375rem;
+  height: 4.375rem;
+  border-radius: 1rem;
+  object-fit: cover;
+  border: 0.125rem solid #E8D831;
+}
+
+.news-content {
+  flex-grow: 1;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.news-content h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.news-content p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: #dcdde1;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.actions a {
+  text-align: center;
+  padding: 0.625rem 1rem;
+  border-radius: 0.625rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.actions a.edit-news {
+  background-color: #6c5ce7;
+  color: #fff;
+}
+
+.actions a.delete-news {
+  background-color: #ff6b6b;
+  color: #fff;
+}
+
+.actions a.edit-news:hover {
+  background-color: #a29bfe;
+}
+
+.actions a.delete-news:hover {
+  background-color: #ff7675;
+}
+
+#previewImage {
+  max-width: 100%;
+  max-height: 12.5rem;
+  display: block;
+  margin-top: 0.625rem;
+  border-radius: 0.5rem;
+  object-fit: contain;
+  border: 0.125rem solid #FF6F61;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 1.5625rem;
+  border-radius: 0.75rem;
+  max-width: 26.25rem;
+  width: 90%;
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 1.375rem;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content label {
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.3125rem;
+  color: #555;
+  font-size: 0.875rem;
+}
+
+.modal-content input[type="text"],
+.modal-content textarea,
+.modal-content input[type="file"] {
+  width: 100%;
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 0.375rem;
+  box-sizing: border-box;
+  margin-bottom: 0.625rem;
+}
+
+#currentEditImage {
+  max-width: 100%;
+  max-height: 12.5rem;
+  object-fit: contain;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid #eee;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  margin-top: 0.9375rem;
+}
+
+.form-actions button {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.form-actions button#saveEditBtn {
+  background-color: #4a4df7;
+  color: #fff;
+}
+
+.form-actions button.cancel {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.form-actions button:hover {
+  opacity: 0.9;
+}
+
+.close-button {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.875rem;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #aaa;
+  font-weight: bold;
+}
+
+.close-button:hover {
+  color: #000;
+}
