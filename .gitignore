@@ -1,20 +1,44 @@
+###############################
 # Node.js
+###############################
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 package-lock.json
 
-# Diretórios de dependências
-.DS_Store
+###############################
+# Firebase
+###############################
+.firebase/
+.firebaserc
+js/firebase/firebaseConfig.js  # Configurações sensíveis
+
+###############################
+# Ambientes
+###############################
 .env
 .env.local
 .env.*.local
 
-# Firebase config
-js/firebaseConfig.js
+###############################
+# Logs
+###############################
+logs/
+*.log
 
-# Pastas do sistema
+###############################
+# Sistema Operacional
+###############################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+###############################
+# IDEs e Editores
+###############################
 .vscode/
 .idea/
 *.suo
@@ -22,25 +46,52 @@ js/firebaseConfig.js
 *.njsproj
 *.sln
 
-# Logs
-logs
-*.log
-
-# Arquivos temporários
+###############################
+# Arquivos Temporários e Cache
+###############################
 tmp/
 temp/
+.cache/
+.vite/
+.vite-cache/
 *.tmp
+*.temp
 *.swp
+*.swo
+*.bak
 
-# Sistema operacional
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Arquivos de build (se usar futuramente)
+###############################
+# Arquivos de Build
+###############################
 dist/
 build/
 
-# Cache do Git
-.git/
-.gitattributes
+###############################
+# Vite
+###############################
+*.html?html-proxy*
+*.js?import
+
+###############################
+# Imagens Locais/Uploads
+###############################
+assets/profileImages/
+assets/images/
+
+###############################
+# Outras Extensões Comuns
+###############################
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+###############################
+# Arquivos de Backup
+###############################
+*.orig
+*.old
+*.backup
+*.bk
+*.bkp
+*.save

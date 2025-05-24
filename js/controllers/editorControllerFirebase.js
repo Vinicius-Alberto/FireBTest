@@ -1,7 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import {getFirestore,collection,addDoc,getDocs,deleteDoc,doc,updateDoc,getDoc} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { initializeApp } from "firebase/app";
+import {getFirestore,collection,addDoc,getDocs,deleteDoc,doc,updateDoc,getDoc} from "firebase/firestore";
 
-import { firebaseConfig } from '../firebaseConfig.js'; // ajuste o caminho se necessário
+import { firebaseConfig } from './firebase/firebaseConfig'; 
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
