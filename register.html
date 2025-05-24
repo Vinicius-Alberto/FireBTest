@@ -2,40 +2,40 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro</title>
-    <link rel="stylesheet" href="./assets/css/common.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar</title>
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-
-    <h1>Cadastro</h1>
-
+    <h1>Registro</h1>
     <form id="registerForm">
-        <input type="text" id="username" placeholder="Usuário" required><br>
-        <input type="password" id="password" placeholder="Senha" required><br>
-        <button type="submit">Cadastrar</button>
+        <label>Usuário: <input type="text" id="username" required></label><br>
+        <label>Senha: <input type="password" id="password" required></label><br>
+        <label>Email: <input type="email" id="email" required></label><br>
+        <button type="submit">Registrar</button>
     </form>
-
-    <p>Já tem conta? <a href="login.html">Login</a></p>
+    <p id="message"></p>
+    <a href="login.html">Ir para Login</a>
 
     <script type="module">
-        import { registerUser } from './js/controllers/userControllerFirebase.js';
+        import { registerUser } from "./js/controllers/userControllerFirebase.js";
 
         const form = document.getElementById('registerForm');
+        const message = document.getElementById('message');
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
 
             try {
-                await registerUser(username, password);
-                alert('Cadastro realizado com sucesso!');
-                window.location.href = 'login.html';
+                await registerUser(username, password, email);
+                message.textContent = 'Usuário registrado com sucesso!';
+                form.reset();
             } catch (error) {
-                alert(error.message);
+                message.textContent = 'Erro: ' + error.message;
             }
         });
     </script>
-
-</body>
 </html>
