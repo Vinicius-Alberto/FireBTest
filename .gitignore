@@ -13,7 +13,13 @@ package-lock.json
 ###############################
 .firebase/
 .firebaserc
-js/firebase/firebaseConfig.js  # Configurações sensíveis
+backend/controllers/firebase/firebaseConfig.js  # Configurações sensíveis
+
+###############################
+# Banco de Dados
+###############################
+backend/database/database.db  # SQLite local
+/data/user.json               # Dados sensíveis locais
 
 ###############################
 # Ambientes
@@ -75,8 +81,8 @@ build/
 ###############################
 # Imagens Locais/Uploads
 ###############################
-assets/profileImages/
-assets/images/
+frontend/assets/profileImages/
+frontend/assets/images/
 
 ###############################
 # Outras Extensões Comuns

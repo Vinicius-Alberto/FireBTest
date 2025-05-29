@@ -115,7 +115,7 @@ form input[type="file"] {
 }
 
 form button {
-  background-color: #6c5ce7;
+  background-color: #7c6df1;
   color: white;
   border: none;
   padding: 0.625rem 1.125rem;
@@ -126,15 +126,15 @@ form button {
 }
 
 form button:hover {
-  background-color: #a29bfe;
+  background-color: #3426f7;
 }
 
 #clearForm {
-  background-color: #d63031;
+  background-color: #f75e5e;
 }
 
 #clearForm:hover {
-  background-color: #ff7675;
+  background-color: #d30303;
 }
 
 .news-list-item {
