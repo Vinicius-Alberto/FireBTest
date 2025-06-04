@@ -1,13 +1,12 @@
-import EditorController from './controllers/editorControllerFirebase.js';
-import EditorView from './views/editorView.js';
+const API_URL = '/api/news';
 
 let currentEditingId = null;
 
 const isEditorPage = window.location.pathname.includes('editor.html');
-const editorController = new EditorController();
-const editorView = new EditorView();
 
-//  FUNÇÕES AUXILIARES 
+// ========== FUNÇÕES ==========
+
+// Upload e preview de imagem
 function renderPreviewImage(inputId, imgId) {
   const file = document.getElementById(inputId).files[0];
   const previewImage = document.getElementById(imgId);
@@ -23,11 +22,39 @@ function renderPreviewImage(inputId, imgId) {
   }
 }
 
+// Limpa o formulário
 function clearForm(formId, previewId) {
   document.getElementById(formId).reset();
   document.getElementById(previewId).style.display = 'none';
 }
 
+// CRUD usando API
+async function loadNews() {
+  const res = await fetch(API_URL);
+  return res.json();
+}
+
+async function saveNews(news) {
+  await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(news),
+  });
+}
+
+async function deleteNews(id) {
+  await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+}
+
+async function updateNews(id, updatedFields) {
+  await fetch(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedFields),
+  });
+}
+
+// ========== FORM EVENTOS ==========
 function bindFormEvents() {
   document.getElementById('image').addEventListener('change', () => renderPreviewImage('image', 'previewImage'));
   document.getElementById('clearForm').addEventListener('click', () => clearForm('newsForm', 'previewImage'));
@@ -36,6 +63,7 @@ function bindFormEvents() {
     e.preventDefault();
     const file = document.getElementById('image').files[0];
     let imageBase64 = '';
+
     if (file) {
       imageBase64 = await new Promise((resolve) => {
         const reader = new FileReader();
@@ -43,13 +71,15 @@ function bindFormEvents() {
         reader.readAsDataURL(file);
       });
     }
+
     const news = {
       title: document.getElementById('title').value,
       content: document.getElementById('content').value,
       image: imageBase64,
       date: new Date().toISOString(),
     };
-    await editorController.saveNews(news);
+
+    await saveNews(news);
     clearForm('newsForm', 'previewImage');
     loadEditorNewsList();
   });
@@ -81,7 +111,7 @@ function bindFormEvents() {
     const updatedFields = { title, content };
     if (image) updatedFields.image = image;
 
-    await editorController.updateNews(currentEditingId, updatedFields);
+    await updateNews(currentEditingId, updatedFields);
     document.getElementById('editModal').style.display = 'none';
     currentEditingId = null;
     loadEditorNewsList();
@@ -92,10 +122,10 @@ function bindFormEvents() {
 async function loadEditorNewsList() {
   const container = document.getElementById('newsList');
   container.innerHTML = '';
-  const news = await editorController.loadNews();
+  const news = await loadNews();
 
   if (news.length === 0) {
-    container.innerHTML = '<p style="color: #1A1A1A;">Nenhuma notícia cadastrada.</p>';
+    container.innerHTML = '<p>Nenhuma notícia cadastrada.</p>';
     return;
   }
 
@@ -131,20 +161,20 @@ async function loadEditorNewsList() {
     editBtn.onclick = (e) => {
       e.preventDefault();
       currentEditingId = id;
-      editorController.getNewsById(id).then(newsItem => {
-        editorView.fillEditModal(newsItem);
-        document.getElementById('editModal').style.display = 'flex';
-      });
+      document.getElementById('editTitle').value = item.title;
+      document.getElementById('editContent').value = item.content;
+      document.getElementById('editModal').style.display = 'flex';
     };
 
     const deleteBtn = document.createElement('a');
     deleteBtn.textContent = 'Excluir';
     deleteBtn.href = '#';
     deleteBtn.className = 'delete-news';
-    deleteBtn.onclick = (e) => {
+    deleteBtn.onclick = async (e) => {
       e.preventDefault();
       if (confirm('Deseja excluir esta notícia?')) {
-        editorController.deleteNews(id).then(loadEditorNewsList);
+        await deleteNews(id);
+        loadEditorNewsList();
       }
     };
 
@@ -164,28 +194,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isEditorPage) {
     loadEditorNewsList();
     bindFormEvents();
-  } else {
-  import('./views/indexView.js').then(({ default: IndexView }) => {
-    const indexView = new IndexView();
-
-    editorController.loadNews().then((news) => {
-      if (news.length > 0) {
-        indexView.renderNews(news);
-        indexView.displaySelectedNews(news[0]);
-
-        indexView.bindSelectNews((id) => {
-          const selected = news.find(n => n.id === id);
-          if (selected) {
-            indexView.displaySelectedNews(selected);
-          }
-        });
-      } else {
-        const display = document.querySelector('.main-display');
-        if (display) {
-          display.innerHTML = '<p style="text-align: center;">Nenhuma notícia disponível.</p>';
-        }
-      }
-    });
-  });
   }
 });

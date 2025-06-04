@@ -1,87 +1,54 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
-import { hashPassword, generateSalt } from '../utils/crypto.js';
+import bcrypt from 'bcrypt';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-export async function openDb() {
-    return open({
-        filename: './backend/database.db',
-        driver: sqlite3.Database
-    });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const dbPath = path.resolve(__dirname, '../database/database.db');
+
+async function openDb() {
+  return open({
+    filename: dbPath,
+    driver: sqlite3.Database
+  });
 }
 
-// 🚀 Inicializa o banco e cria a tabela se não existir
-export async function initDb() {
-    const db = await openDb();
-    await db.exec(`
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE,
-            passwordHash TEXT,
-            salt TEXT,
-            role TEXT
-        )
-    `);
+export async function registerUser(req, res) {
+  const { username, password, role = 'viewer' } = req.body;
+  const db = await openDb();
+
+  const existing = await db.get('SELECT * FROM users WHERE username = ?', username);
+  if (existing) {
+    return res.status(400).json({ error: 'Usuário já existe' });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  await db.run('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', [
+    username,
+    hashedPassword,
+    role
+  ]);
+
+  res.json({ message: 'Usuário registrado com sucesso' });
 }
 
-// 🔐 Registro de usuário
-export async function registerUser(username, password, role = 'viewer') {
-    const db = await openDb();
+export async function loginUser(req, res) {
+  const { username, password } = req.body;
+  const db = await openDb();
 
-    const salt = generateSalt();
-    const passwordHash = hashPassword(password, salt);
+  const user = await db.get('SELECT * FROM users WHERE username = ?', username);
+  if (!user) {
+    return res.status(400).json({ error: 'Usuário não encontrado' });
+  }
 
-    try {
-        await db.run(
-            `INSERT INTO users (username, passwordHash, salt, role)
-             VALUES (?, ?, ?, ?)`,
-            [username, passwordHash, salt, role]
-        );
-        return { success: true, message: 'Usuário registrado com sucesso' };
-    } catch (err) {
-        if (err.code === 'SQLITE_CONSTRAINT') {
-            throw new Error('Usuário já existe');
-        }
-        throw err;
-    }
-}
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    return res.status(400).json({ error: 'Senha incorreta' });
+  }
 
-// 🔑 Login
-export async function loginUser(username, password) {
-    const db = await openDb();
-    const user = await db.get(
-        `SELECT * FROM users WHERE username = ?`,
-        username
-    );
-    if (!user) return false;
-
-    const inputHash = hashPassword(password, user.salt);
-    const isValid = inputHash === user.passwordHash;
-
-    if (isValid) {
-        return {
-            username: user.username,
-            role: user.role
-        };
-    } else {
-        return false;
-    }
-}
-
-// 🎫 Buscar role do usuário
-export async function getUserRole(username) {
-    const db = await openDb();
-    const user = await db.get(
-        `SELECT role FROM users WHERE username = ?`,
-        username
-    );
-    return user ? user.role : null;
-}
-
-// 🔍 Verificar se usuário existe (opcional)
-export async function getUserByUsername(username) {
-    const db = await openDb();
-    return await db.get(
-        `SELECT * FROM users WHERE username = ?`,
-        username
-    );
+  // Retorna apenas os dados necessários
+  res.json({ message: 'Login bem-sucedido', user: { id: user.id, username: user.username, role: user.role } });
 }
