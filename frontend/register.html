@@ -1,41 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar</title>
-    <link rel="stylesheet" href="css/index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar - O Diário</title>
+  <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <h1>Registro</h1>
-    <form id="registerForm">
-        <label>Usuário: <input type="text" id="username" required></label><br>
-        <label>Senha: <input type="password" id="password" required></label><br>
-        <label>Email: <input type="email" id="email" required></label><br>
-        <button type="submit">Registrar</button>
-    </form>
-    <p id="message"></p>
-    <a href="login.html">Ir para Login</a>
+  <h1>Registrar Conta</h1>
 
-    <script type="module">
-        import { registerUser } from "./js/controllers/userControllerFirebase.js";
+  <form id="registerForm">
+    <label>Usuário: <input type="text" id="username" required></label><br>
+    <label>Senha: <input type="password" id="password" required></label><br>
+    <label>Email: <input type="email" id="email"></label><br>
+    <button type="submit">Registrar</button>
+  </form>
 
-        const form = document.getElementById('registerForm');
-        const message = document.getElementById('message');
+  <p id="message"></p>
+  <a href="login.html">Já tem uma conta? Faça login</a>
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const email = document.getElementById('email').value.trim();
+  <script type="module">
+    import { registerUser } from '../backend/utils/auth.js';
 
-            try {
-                await registerUser(username, password, email);
-                message.textContent = 'Usuário registrado com sucesso!';
-                form.reset();
-            } catch (error) {
-                message.textContent = 'Erro: ' + error.message;
-            }
-        });
-    </script>
+    const form = document.getElementById('registerForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value.trim();
+
+      try {
+        await registerUser(username, password, email);
+        message.textContent = 'Registro realizado com sucesso!';
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1500);
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    });
+  </script>
+</body>
 </html>

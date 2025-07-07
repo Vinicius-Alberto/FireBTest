@@ -34,9 +34,9 @@
     });
     </script>
     <script type="module">
-    import { isLoggedIn } from './js/controllers/userControllerFirebase.js';
+    const user = JSON.parse(localStorage.getItem('user'));
 
-    if (!isLoggedIn()) {
+    if (!user) {
         window.location.href = 'login.html';
     }
     </script>
